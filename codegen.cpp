@@ -1,4 +1,3 @@
-// codegen.cpp
 #include "ast.hpp"
 #include <sstream>
 #include <vector>
@@ -31,6 +30,21 @@ class CodegenASM {
 
     void emitLabel(const std::string& label) {
         asmLines.push_back(label + ":");
+    }
+
+    std::string evalStringExpr(const NodePtr& node) {
+    if (auto lit = std::dynamic_pointer_cast<LiteralNode>(node)) {
+        return lit->value;
+    }
+    if (auto var = std::dynamic_pointer_cast<VarRefNode>(node)) {
+        return "<var:" + var->name + ">";
+    }
+    if (auto bin = std::dynamic_pointer_cast<BinaryOpNode>(node)) {
+        if (bin->op == "+") {
+            return evalStringExpr(bin->lhs) + evalStringExpr(bin->rhs);
+        }
+    }
+    return ""; 
     }
 
 public:
@@ -176,9 +190,8 @@ public:
             case NodeKind::Inj: {
                 auto inj = std::dynamic_pointer_cast<InjStmtNode>(stmt);
                 for (auto& val : inj->values) {
-                    if (auto lit = std::dynamic_pointer_cast<LiteralNode>(val)) {
-                        emit(lit->value);
-                    }
+                    std::string line = evalStringExpr(val);
+                    if (!line.empty()) emit(line);
                 }
                 break;
             }
