@@ -36,7 +36,9 @@ private:
 
             if (line.rfind("load \"", 0) == 0 && line.back() == '"') {
                 std::string path = line.substr(6);
-                path = path.substr(1, path.length() - 2);
+                if (path.front() == '"' && path.back() == '"') {
+                    path = path.substr(1, path.length() - 2);
+                }
                 result << processFile(path) << "\n"; 
             } else if (!line.empty()) {
                 result << line << "\n";
