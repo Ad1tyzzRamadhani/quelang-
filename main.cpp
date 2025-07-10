@@ -30,6 +30,9 @@ int main(int argc, char* argv[]) {
         Parser parser(tokens);
         auto program = parser.parseProgram();
 
+        SemanticChecker checker;
+        checker.check(program);
+
         CodegenASM codegen;
         std::string asmCode = codegen.generate(program);
 
