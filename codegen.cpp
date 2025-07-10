@@ -20,6 +20,7 @@ class CodegenASM {
     std::unordered_map<std::string, int> localOffsets;
     int currentOffset = 0;
 
+    std::unordered_map<std::string, std::string> localStringLiterals;
     std::string uniqueLabel(const std::string& base) {
         return base + std::to_string(labelCount++);
     }
@@ -37,16 +38,17 @@ class CodegenASM {
         return lit->value;
     }
     if (auto var = std::dynamic_pointer_cast<VarRefNode>(node)) {
-        return "<var:" + var->name + ">";
+        if (localStringLiterals.count(var->name))
+            return localStringLiterals[var->name];
+        return "<undef:" + var->name + ">";
     }
     if (auto bin = std::dynamic_pointer_cast<BinaryOpNode>(node)) {
         if (bin->op == "+") {
             return evalStringExpr(bin->lhs) + evalStringExpr(bin->rhs);
         }
     }
-    return ""; 
-    }
-
+    return "";
+}
 public:
     std::string generate(std::shared_ptr<ProgramNode> program) {
         asmLines.clear();
@@ -115,6 +117,10 @@ public:
         switch (stmt->kind) {
             case NodeKind::Decl: {
                 auto d = std::dynamic_pointer_cast<DeclStmtNode>(stmt);
+                if (auto lit = std::dynamic_pointer_cast<LiteralNode>(d->expr)) {
+                    localStringLiterals[d->name] = lit->value;
+                }
+
                 genExpr(d->expr);
                 currentOffset += 8;
                 localOffsets[d->name] = -currentOffset;
