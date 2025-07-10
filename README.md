@@ -12,7 +12,7 @@
 ---
 
 > ⚠️ **PERINGATAN**: QueLang masih dalam versi awal (`v0.1-alpha`) dan belum stabil.  
-> Harap tidak digunakan untuk produksi. Masukan dan eksperimen sangat diapresiasi!
+> Harap tidak digunakan untuk produksi besar. Masukan dan eksperimen sangat diapresiasi!
 >
 
 ## ✨ Mengapa Memilih QueLang?
