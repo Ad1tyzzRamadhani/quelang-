@@ -1,5 +1,6 @@
 #include "parser.cpp"
 #include "codegen.cpp"
+#include "linker.hpp"
 #include <fstream>
 #include <iostream>
 
@@ -7,7 +8,6 @@ int main(int argc, char* argv[]) {
     bool debug = false;
     std::string inputPath, outputPath;
 
-    // Argument parsing with optional --debug
     if (argc == 4 && std::string(argv[1]) == "--debug") {
         debug = true;
         inputPath = argv[2];
@@ -20,17 +20,10 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::ifstream inputFile(inputPath);
-    if (!inputFile.is_open()) {
-        std::cerr << "Error: Cannot open input file: " << inputPath << "\n";
-        return 1;
-    }
-
-    std::string source((std::istreambuf_iterator<char>(inputFile)),
-                       std::istreambuf_iterator<char>());
-    inputFile.close();
-
     try {
+        Linker linker;
+        std::string source = linker.link(inputPath);
+
         Tokenizer tokenizer(source, debug);
         std::vector<Token> tokens = tokenizer.tokenize();
 
