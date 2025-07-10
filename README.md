@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://1lm.me/qlogo-light.png" width="50%" alt="QueLang Logo">
+  <img src="https://ibb.co/fVKRzQHj" width="50%" alt="QueLang Logo">
   <h1>🌱 QueLang — A Minimalist Systems Language</h1>
   <p><em>Bahasa sistem baru yang eksplisit, minimalis, dan mendekati perangkat keras.</em></p>
   <p>
