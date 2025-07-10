@@ -1,5 +1,3 @@
----
-
 🌱 QueLang — A Minimalist Systems Language
 
 QueLang adalah bahasa pemrograman baru yang dirancang untuk kesederhanaan, eksplisit, dan mudah dipahami. Fokusnya:
