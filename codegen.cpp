@@ -229,6 +229,12 @@ public:
                 else if (bin->op == "-") emit("  sub x0, x1, x0");
                 else if (bin->op == "*") emit("  mul x0, x1, x0");
                 else if (bin->op == "/") emit("  udiv x0, x1, x0");
+                else if (bin->op == "==") emit("  cmp x1, x0\n  cset x0, eq");
+                else if (bin->op == "!=") emit("  cmp x1, x0\n  cset x0, ne");
+                else if (bin->op == "<") emit("  cmp x1, x0\n  cset x0, lt");
+                else if (bin->op == "<=") emit("  cmp x1, x0\n  cset x0, le");
+                else if (bin->op == ">")  emit("  cmp x1, x0\n  cset x0, gt");
+                else if (bin->op == ">=") emit("  cmp x1, x0\n  cset x0, ge");
                 break;
             }
             default: break;
