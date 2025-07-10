@@ -45,9 +45,16 @@ private:
     }
 
     void checkBlock(const std::shared_ptr<BlockNode>& block, const std::string& expectedReturnType) {
-        for (auto& stmt : block->statements) {
-            checkStmt(stmt, expectedReturnType);
+    std::unordered_set<std::string> localVars;
+
+    for (auto& stmt : block->statements) {
+        if (auto decl = std::dynamic_pointer_cast<DeclStmtNode>(stmt)) {
+            if (localVars.count(decl->name)) {
+                throw std::runtime_error("Redefinition of variable '" + decl->name + "' at line " + std::to_string(decl->line));
+            }
+            localVars.insert(decl->name);
         }
+        checkStmt(stmt, expectedReturnType);
     }
 
     void checkStmt(const NodePtr& stmt, const std::string& expectedReturnType) {
