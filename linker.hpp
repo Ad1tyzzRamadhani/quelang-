@@ -3,13 +3,13 @@
 
 #include <string>
 #include <unordered_set>
-#include <unordered_map>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
 
 class Linker {
     std::unordered_set<std::string> loadedFiles;
+
 public:
     std::string link(const std::string& path) {
         loadedFiles.clear();
@@ -28,24 +28,30 @@ private:
         std::string line;
 
         while (std::getline(in, line)) {
-            size_t pos = line.find("#");
-            if (pos != std::string::npos) line = line.substr(0, pos);
-
+            size_t commentPos = line.find('#');
+            if (commentPos != std::string::npos) {
+                line = line.substr(0, commentPos);
+            }
+            
             line.erase(0, line.find_first_not_of(" \t"));
             line.erase(line.find_last_not_of(" \t") + 1);
 
-            if (line.rfind("load \"", 0) == 0 && line.back() == '"') {
-                std::string path = line.substr(6);
-                if (path.front() == '"' && path.back() == '"') {
-                    path = path.substr(1, path.length() - 2);
+            if (line.rfind("load", 0) == 0) {
+                size_t firstQuote = line.find('"');
+                size_t lastQuote = line.rfind('"');
+                if (firstQuote != std::string::npos && lastQuote != std::string::npos && firstQuote < lastQuote) {
+                    std::string path = line.substr(firstQuote + 1, lastQuote - firstQuote - 1);
+                    result << processFile(path) << "\n";
                 }
-                result << processFile(path) << "\n"; 
-            } else if (!line.empty()) {
+                continue;
+            }
+
+            if (!line.empty()) {
                 result << line << "\n";
             }
         }
 
-        result << "\n"; 
+        result << "\n";
         return result.str();
     }
 };
