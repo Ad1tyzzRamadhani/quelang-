@@ -1,5 +1,6 @@
 #include "ast.hpp"
 #include <unordered_map>
+#include <unordered_set>
 #include <stdexcept>
 #include <string>
 #include <memory>
@@ -45,16 +46,17 @@ private:
     }
 
     void checkBlock(const std::shared_ptr<BlockNode>& block, const std::string& expectedReturnType) {
-    std::unordered_set<std::string> localVars;
+        std::unordered_set<std::string> localVars;
 
-    for (auto& stmt : block->statements) {
-        if (auto decl = std::dynamic_pointer_cast<DeclStmtNode>(stmt)) {
-            if (localVars.count(decl->name)) {
-                throw std::runtime_error("Redefinition of variable '" + decl->name + "' at line " + std::to_string(decl->line));
+        for (auto& stmt : block->statements) {
+            if (auto decl = std::dynamic_pointer_cast<DeclStmtNode>(stmt)) {
+                if (localVars.count(decl->name)) {
+                    throw std::runtime_error("Redefinition of variable '" + decl->name + "' at line " + std::to_string(decl->line));
+                }
+                localVars.insert(decl->name);
             }
-            localVars.insert(decl->name);
+            checkStmt(stmt, expectedReturnType);
         }
-        checkStmt(stmt, expectedReturnType);
     }
 
     void checkStmt(const NodePtr& stmt, const std::string& expectedReturnType) {
