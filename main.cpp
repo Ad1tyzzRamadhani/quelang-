@@ -1,6 +1,7 @@
 #include "parser.cpp"
 #include "codegen.cpp"
 #include "linker.hpp"
+#include "checker.cpp"
 #include <fstream>
 #include <iostream>
 
