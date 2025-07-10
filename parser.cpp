@@ -138,6 +138,7 @@ public:
     NodePtr parseStmt() {
         Token t = peek();
         if (accept(KEYWORD, "let")) {
+            int line = current.line;
             std::string name = expectIdent();
             std::string type = "";
             if (accept(SYMBOL, ":")) {
@@ -145,7 +146,9 @@ public:
             }
             expect(SYMBOL, "=");
             NodePtr expr = parseExpr();
-            return std::make_shared<DeclStmtNode>(DeclStmtNode{name, type, expr});
+            auto decl = std::make_shared<DeclStmtNode>(DeclStmtNode{name, type, expr});
+    decl->line = line;
+            return decl;
         } else if (accept(KEYWORD, "if")) {
             auto cond = parseExpr();
             auto block = parseBlock();
