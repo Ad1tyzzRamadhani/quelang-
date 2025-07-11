@@ -11,7 +11,7 @@
 
 ---
 
-> ⚠️ **PERINGATAN**: QueLang masih dalam versi awal (`v0.1-alpha`) dan belum stabil.  
+> ⚠️ **PERINGATAN**: QueLang masih dalam versi awal (`v0.4-alpha`) dan belum stabil.  
 > Harap tidak digunakan untuk produksi besar. Masukan dan eksperimen sangat diapresiasi!
 >
 
@@ -20,7 +20,7 @@
 **QueLang cocok untuk:**
 
 - 🧑‍🎓 Pelajar yang ingin belajar sistem low-level dengan gaya modern
-- ⚙️ Pengembang OS, bare-metal ARM, atau sistem embedded
+- ⚙️ Pengembang mikrokernel, bare-metal ARM, atau sistem embedded
 - 👩‍🔬 Eksperimen bahasa / compiler enthusiast / riset PL
 
 | ✅ Kelebihan                          | ⚠️ Kekurangan                        |
@@ -52,7 +52,7 @@ Aktifkan debug:
 
 ---
 
-## 🔍 Fitur Bahasa
+## 🔍 Contoh Fitur Bahasa
 
 ### 🧩 Fungsi (`def`)
 ```quelang
@@ -79,7 +79,7 @@ init type Age = u16
 
 ### 🔥 Injeksi ASM (`inj`)
 ```quelang
-inj raw {mov x0, #42 ret"}
+inj raw {mov x0, #42\nret"}
 ```
 
 ### 🔁 Kontrol Alur
@@ -105,14 +105,16 @@ return age + 5
 
 ## 📁 Struktur File Proyek
 
-| File          | Fungsi                                  |
-|---------------|------------------------------------------|
-| `main.cpp`    | Pipeline tokenizer → parser → ASM        |
-| `token.cpp`   | Lexer/tokenizer                          |
-| `parser.cpp`  | Parser + AST                             |
-| `codegen.cpp` | Codegen AArch64                          |
-| `ast.hpp`     | Struktur node AST                        |
-| `grammar.txt` | Grammar formal BNF                       |
+| File           | Fungsi                                    |
+|----------------|--------------------------------------------|
+| `main.cpp`     | Pipeline: tokenizer → parser → codegen ASM |
+| `linker.hpp`   | Linker statis untuk file `load "..."`      |
+| `token.cpp`    | Lexer / tokenizer                          |
+| `parser.cpp`   | Parser + pembentukan AST                   |
+| `checker.cpp`  | Semantic checker minimal                   |
+| `codegen.cpp`  | Codegen ke AArch64                         |
+| `ast.hpp`      | Struktur node AST (Abstract Syntax Tree)   |
+| `grammar.txt`  | Grammar formal dalam BNF                   |
 
 ---
 
@@ -121,7 +123,7 @@ return age + 5
 ```quelang
 def struct Pair {a: u16 b: u16}
 
-def set(x: *u16, y: u16) {
+def set(x: u16, y: u16) {
     *x = y
 }
 
@@ -140,7 +142,13 @@ QueLang adalah proyek open-source.
 Silakan kontribusi melalui GitHub.
 Versi saat ini masih belum stabil , Untuk kedepannya akan saya perbaiki lagi :)
 
-Versi: `v0.1 alpha`  
+Versi: `v0.4 alpha`  
 © 2025 QueLang Contributors — Dibuat dengan ❤️ untuk pembelajar sistem low-level.
 
 ---
+
+<!-- 
+Keywords: QueLang, que lang, bahasa pemrograman embedded, sistem minimalis, sistem ARM, AArch64, bahasa sistem baru, sistem bare-metal, compiler modern, bahasa eksplisit, riset PL, sistem programming language, toy compiler, minimalist systems language, low-level language education, bahasa untuk riset compiler, sistem operasi embedded, ARMv8 AArch64 compiler, compiler education tools
+-->
+
+Topics: compiler, aarch64, systems-programming, programming-language, toy-language, embedded, risc, arm64
