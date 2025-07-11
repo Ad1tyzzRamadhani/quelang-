@@ -1,5 +1,6 @@
-program         ::= { top_def newline }*
+program         ::= { linker newline }* { top_def newline }*
 
+linker          ::= "load" STRING
 top_def         ::= "init" block
                  | "def" IDENT "(" [ param_list ] ")" [ ":" type ] block
                  | "init" "type" IDENT "=" type
