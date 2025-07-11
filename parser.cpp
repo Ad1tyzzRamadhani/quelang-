@@ -138,7 +138,7 @@ public:
     NodePtr parseStmt() {
         Token t = peek();
         if (accept(KEYWORD, "let")) {
-            int line = current.line;
+            int line = peek().line;
             std::string name = expectIdent();
             std::string type = "";
             if (accept(SYMBOL, ":")) {
