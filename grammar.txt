@@ -1,0 +1,65 @@
+program         ::= { top_def newline }*
+
+top_def         ::= "init" block
+                 | "def" IDENT "(" [ param_list ] ")" [ ":" type ] block
+                 | "init" "type" IDENT "=" type
+                 | "def" "struct" IDENT "{" struct_field_list "}"
+
+param_list      ::= param { "," param }
+param           ::= IDENT ":" type
+
+block           ::= "{" { stmt newline }* "}"
+
+stmt            ::= decl_stmt
+                 | assign_stmt
+                 | expr_stmt
+                 | if_stmt
+                 | while_stmt
+                 | return_stmt
+                 | break_stmt
+                 | continue_stmt
+                 | inj_stmt
+
+decl_stmt       ::= "let" IDENT [ ":" type ] "=" expr
+assign_stmt     ::= IDENT "=" expr
+expr_stmt       ::= expr
+
+if_stmt         ::= "if" expr block { "elseif" expr block } [ "else" block ]
+while_stmt      ::= "while" expr block
+return_stmt     ::= "return" [ expr ]
+break_stmt      ::= "break"
+continue_stmt   ::= "continue"
+
+struct_field_list ::= struct_field { newline struct_field }*
+struct_field       ::= IDENT ":" type
+
+inj_stmt        ::= "inj" IDENT "{" { expr } "}"
+
+type            ::= base_type | "*" type
+base_type       ::= "u16" | "bool" | "str" | IDENT
+
+expr            ::= assignable_expr { op assignable_expr }
+
+assignable_expr ::= simple_expr
+simple_expr     ::= literal
+                 | IDENT call_or_none
+                 | IDENT struct_init
+                 | "(" expr ")"
+                 | "-" simple_expr
+                 | "*" simple_expr
+
+call_or_none    ::= "(" [ expr_list ] ")" | ε
+struct_init     ::= "()"
+
+expr_list       ::= expr { "," expr }
+
+op              ::= "+" | "-" | "*" | "/" | "%"
+                 | "==" | "!=" | "<" | ">" | "<=" | ">="
+                 | "="
+
+literal         ::= NUMBER | STRING | "true" | "false" | "nil"
+IDENT           ::= letter { letter | digit | "_" }
+STRING          ::= '"' { char | "\\" ("n"|"r"|"t"|"\""|"\\") } '"'
+NUMBER          ::= digit { digit }
+
+newline         ::= NEWLINE
