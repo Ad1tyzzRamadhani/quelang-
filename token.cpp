@@ -93,7 +93,7 @@ public:
         // Symbols & operators
         std::string sym;
         sym += get();
-        if ((sym == "=" || sym == "!" || sym == "<" || sym == "<=" || sym == ">=" || sym == "!=" || sym == "==" || sym == ">") && peek() == '=') {
+        if ((sym == "=" || sym == "!" || sym == "<" || sym == "<=" || sym == "*" || sym == "%" || sym == "+" || sym == ">=" || sym == "!=" || sym == "==" || sym == ">") && peek() == '=') {
             sym += get();
         }
         return Token(SYMBOL, sym, line);
