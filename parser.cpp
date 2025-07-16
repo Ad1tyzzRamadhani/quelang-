@@ -147,7 +147,7 @@ public:
             expect(SYMBOL, "=");
             NodePtr expr = parseExpr();
             auto decl = std::make_shared<DeclStmtNode>(DeclStmtNode{name, type, expr});
-    decl->line = line;
+            decl->line = line;
             return decl;
         } else if (accept(KEYWORD, "if")) {
             auto cond = parseExpr();
@@ -232,7 +232,10 @@ public:
         if (t.type == NUMBER || t.type == STRING || t.value == "true" || t.value == "false" || t.value == "nil") {
             return std::make_shared<LiteralNode>(t.value, t.line);
         } else if (t.type == IDENT) {
-            if (accept(SYMBOL, "(")) {
+            if (peek().value == "(" && tokens[index + 1].value == ")") {
+                get(); get(); // consume ( )
+                return std::make_shared<StructInitNode>(t.value, t.line);
+            } else if (accept(SYMBOL, "(")) {
                 std::vector<NodePtr> args;
                 if (!accept(SYMBOL, ")")) {
                     do {
@@ -243,8 +246,6 @@ public:
                 auto call = std::make_shared<CallNode>(t.value, t.line);
                 call->args = args;
                 return call;
-            } else if (accept(SYMBOL, "(") && accept(SYMBOL, ")")) {
-                return std::make_shared<StructInitNode>(t.value, t.line);
             } else {
                 return std::make_shared<VarRefNode>(t.value, t.line);
             }
