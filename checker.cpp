@@ -1,4 +1,9 @@
-#include "ast.hpp" #include <unordered_map> #include <unordered_set> #include <stdexcept> #include <string> #include <memory>
+#include "ast.hpp" 
+#include <unordered_map> 
+#include <unordered_set> 
+#include <stdexcept> 
+#include <string> 
+#include <memory>
 
 class SemanticChecker { struct VarInfo { std::string type; bool isDefined = false; };
 
