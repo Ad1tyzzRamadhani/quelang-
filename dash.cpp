@@ -2,7 +2,7 @@
 #include <cstdlib>
 
 void showMenu() {
-    std::cout << "\n=== 🌱 QueLang CLI ===\n";
+    std::cout << "\n=== QueLang Compiler ===\n";
     std::cout << "1. Compile file .q → .s\n";
     std::cout << "2. Compile & Assemble & Link → binary\n";
     std::cout << "3. Run example\n";
