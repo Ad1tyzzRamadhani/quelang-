@@ -93,9 +93,12 @@ public:
         // Symbols & operators
         std::string sym;
         sym += get();
-        if ((sym == "=" || sym == "!" || sym == "<" || sym == "-" || sym == "/" || sym == "<=" || sym == "*" || sym == "%" || sym == "+" || sym == ">=" || sym == "!=" || sym == "==" || sym == ">") && peek() == '=') {
-            sym += get();
+
+        char next = peek();
+        if ((sym == "=" || sym == "!" || sym == "<" || sym == ">") && next == '=') {
+            sym += get(); // Dapatkan '=' untuk kombinasi ==, !=, <=, >=
         }
+
         return Token(SYMBOL, sym, line);
     }
 
