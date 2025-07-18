@@ -48,6 +48,9 @@ simple_expr     ::= literal
                  | "(" expr ")"
                  | "-" simple_expr
                  | "*" simple_expr
+                 | field_access
+
+field_access     ::= assignable_expr "." IDENT
 
 call_or_none    ::= "(" [ expr_list ] ")" | ε
 struct_init     ::= "()"
