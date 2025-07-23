@@ -10,7 +10,7 @@ enum class NodeKind {
     StructDef, Param, Block, Decl, Assign, ExprStmt,
     If, While, Return, Break, Continue, Inj,
     Literal, BinaryOp, UnaryOp, VarRef, Call, StructInit,
-    PointerAssign  // <- DUKUNGAN BARU
+    PointerAssign, MemberAccess
 };
 
 struct Node {
@@ -177,6 +177,15 @@ struct PointerAssignNode : Node {
     PointerAssignNode(NodePtr ptr, NodePtr val) : pointerExpr(ptr), valueExpr(val) {
         kind = NodeKind::PointerAssign;
         line = ptr->line;
+    }
+};
+
+struct MemberAccessNode : Node {
+    NodePtr object;
+    std::string field;
+    MemberAccessNode(NodePtr obj, const std::string& fld) : object(obj), field(fld) {
+        kind = NodeKind::MemberAccess;
+        line = obj->line;
     }
 };
 
