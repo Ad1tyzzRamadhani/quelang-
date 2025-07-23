@@ -21,8 +21,8 @@ stmt            ::= decl_stmt
                  | continue_stmt
                  | inj_stmt
 
-decl_stmt       ::= "let" IDENT [ ":" type ] "=" expr
-assign_stmt     ::= IDENT "=" expr
+decl_stmt       ::= "let" assignable_expr [ ":" type ] "=" expr
+assign_stmt     ::= assignable_expr "=" expr
 expr_stmt       ::= expr
 
 if_stmt         ::= "if" expr block { "elseif" expr block } [ "else" block ]
@@ -39,20 +39,29 @@ inj_stmt        ::= "inj" IDENT "{" { expr } "}"
 type            ::= base_type | "*" type
 base_type       ::= "u16" | "bool" | "str" | IDENT
 
-expr            ::= assignable_expr { op assignable_expr }
+expr            ::= def_expr
+                 | assignable_expr { op assignable_expr }
 
-assignable_expr ::= simple_expr
+assignable_expr ::= postfix_expr
+
+postfix_expr    ::= simple_expr { access_or_call }*
+access_or_call  ::= "." IDENT
+                 | "(" [ expr_list ] ")"
+
 simple_expr     ::= literal
-                 | IDENT call_or_none
-                 | IDENT struct_init
+                 | IDENT
                  | "(" expr ")"
                  | "-" simple_expr
                  | "*" simple_expr
-                 | field_access
+                 | "!" simple_expr
+                 | struct_init
+                 | def_expr
+                 | "{" { stmt newline }* [ expr ] "}"
 
-field_access     ::= assignable_expr "." IDENT
+field_access     ::= assignable_expr "." IDENT   (* folded into postfix_expr *)
 
-call_or_none    ::= "(" [ expr_list ] ")" | ε
+def_expr        ::= "def" "(" [ param_list ] ")" [ ":" type ] block
+
 struct_init     ::= "()"
 
 expr_list       ::= expr { "," expr }
@@ -60,6 +69,7 @@ expr_list       ::= expr { "," expr }
 op              ::= "+" | "-" | "*" | "/" | "%"
                  | "==" | "!=" | "<" | ">" | "<=" | ">="
                  | "="
+                 | "and" | "or"
 
 literal         ::= NUMBER | STRING | "true" | "false" | "nil"
 IDENT           ::= letter { letter | digit | "_" }
