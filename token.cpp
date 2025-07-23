@@ -18,7 +18,7 @@ struct Token {
 
 const std::unordered_set<std::string> keywords = {
     "init", "def", "type", "struct", "let", "if", "else", "elseif", "while",
-    "return", "break", "continue", "true", "false", "nil", "inj", "u16", "bool", "str"
+    "return", "break", "continue", "true", "false", "nil", "inj", "u16", "bool", "str", "and", "or"
 };
 
 class Tokenizer {
