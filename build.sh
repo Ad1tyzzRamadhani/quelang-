@@ -1,8 +1,4 @@
 #!/bin/bash
-
-# Build script for QueLang
-# Requires: g++, C++17
-
 echo "🔧 Building QueLang compiler..."
 g++ -std=c++17 main.cpp -o quelang
 chmod +x quelang 
@@ -18,6 +14,7 @@ if [ $? -eq 0 ]; then
     echo " "
     echo "qc0.7 --Alpha"
 else
+    echo "EROR !"
     echo "❌ Build failed!"
     echo "Check https://github.com/Ad1tyzzRamadhani/quelang-"
     echo "For Latest Fix Info"
