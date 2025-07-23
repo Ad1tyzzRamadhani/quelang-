@@ -35,8 +35,8 @@
 
 Build Compiler: 
 ```sh
-g++ -std=c++17 main.cpp -o quelang
-chmod +x quelang
+chmod +x build.sh
+bash build.sh
 ```
 
 ```sh
