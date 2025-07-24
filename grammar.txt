@@ -55,12 +55,9 @@ simple_expr     ::= literal
                  | "*" simple_expr
                  | "!" simple_expr
                  | struct_init
-                 | def_expr
                  | "{" { stmt newline }* [ expr ] "}"
 
 field_access     ::= assignable_expr "." IDENT   (* folded into postfix_expr *)
-
-def_expr        ::= "def" "(" [ param_list ] ")" [ ":" type ] block
 
 struct_init     ::= "()"
 
