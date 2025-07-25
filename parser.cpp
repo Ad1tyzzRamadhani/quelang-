@@ -224,7 +224,31 @@ public:
     }
 
     NodePtr parseAssignableExpr() {
-        return parseSimpleExpr();
+        return parsePostfixExpr(parseSimpleExpr());
+    }
+
+    NodePtr parsePostfixExpr(NodePtr base) {
+        while (true) {
+            if (accept(SYMBOL, ".")) {
+                std::string field = expectIdent();
+                base = std::make_shared<MemberAccessNode>(base, field);
+            } else if (accept(SYMBOL, "(")) {
+                std::vector<NodePtr> args;
+                if (!accept(SYMBOL, ")")) {
+                    do {
+                        args.push_back(parseExpr());
+                    } while (accept(SYMBOL, ","));
+                    expect(SYMBOL, ")");
+                }
+                auto call = std::make_shared<CallNode>("", base->line);
+                call->args = args;
+                call->name = "__inline";
+                base = call;
+            } else {
+                break;
+            }
+        }
+        return base;
     }
 
     NodePtr parseSimpleExpr() {
@@ -233,7 +257,7 @@ public:
             return std::make_shared<LiteralNode>(t.value, t.line);
         } else if (t.type == IDENT) {
             if (peek().value == "(" && tokens[index + 1].value == ")") {
-                get(); get(); // consume ( )
+                get(); get();
                 return std::make_shared<StructInitNode>(t.value, t.line);
             } else if (accept(SYMBOL, "(")) {
                 std::vector<NodePtr> args;
