@@ -87,7 +87,9 @@ public:
                 std::string name = expectIdent();
                 expect(SYMBOL, "{");
                 auto def = std::make_shared<StructDefNode>(name, t.line);
-                while (!accept(SYMBOL, "}")) {
+                while (true) {
+                    skipNewlines();
+                    if (accept(SYMBOL, "}")) break;
                     std::string field = expectIdent();
                     expect(SYMBOL, ":");
                     std::string type = expectType();
@@ -186,7 +188,9 @@ public:
             std::string target = expectIdent();
             expect(SYMBOL, "{");
             auto inj = std::make_shared<InjStmtNode>(target);
-            while (!accept(SYMBOL, "}")) {
+            while (true) {
+                skipNewlines();
+                if (accept(SYMBOL, "}")) break;
                 inj->values.push_back(parseExpr());
                 skipNewlines();
             }
@@ -280,8 +284,18 @@ public:
         } else if (t.value == "-" || t.value == "*" || t.value == "&") {
             NodePtr rhs = parseSimpleExpr();
             return std::make_shared<UnaryOpNode>(t.value, rhs);
+        } else if (t.value == "[") {
+            auto arr = std::make_shared<ArrayLiteralNode>(t.line);
+            skipNewlines();
+            while (true) {
+                if (accept(SYMBOL, "]")) break;
+                arr->elements.push_back(parseExpr());
+                skipNewlines();
+                accept(SYMBOL, ",");
+                skipNewlines();
+            }
+            return arr;
         }
-
         throw std::runtime_error("Unexpected expression token at line " + std::to_string(t.line));
     }
 
