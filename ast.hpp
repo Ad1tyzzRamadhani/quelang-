@@ -128,6 +128,11 @@ struct LiteralNode : Node {
     }
 };
 
+struct ArrayLiteralNode : Node {
+    std::vector<NodePtr> elements;
+    ArrayLiteralNode(int line) { this->kind = NodeKind::ArrayLiteral; this->line = line; }
+};
+
 struct VarRefNode : Node {
     std::string name;
     VarRefNode(const std::string& v, int l) : name(v) {
