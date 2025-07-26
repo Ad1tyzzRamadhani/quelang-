@@ -10,7 +10,7 @@ enum class NodeKind {
     StructDef, Param, Block, Decl, Assign, ExprStmt,
     If, While, Return, Break, Continue, Inj,
     Literal, BinaryOp, UnaryOp, VarRef, Call, StructInit,
-    PointerAssign, MemberAccess
+    PointerAssign, MemberAccess, ArrayLiteral
 };
 
 struct Node {
