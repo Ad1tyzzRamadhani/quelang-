@@ -278,6 +278,25 @@ public:
             } else {
                 return std::make_shared<VarRefNode>(t.value, t.line);
             }
+        else if (t.value == "{") {
+            auto block = std::make_shared<BlockNode>();
+            block->line = t.line;
+            skipNewlines();
+            while (!accept(SYMBOL, "}")) {
+                if (peek().value == "}") break;
+                Token next = peek();
+                if (next.type == KEYWORD || next.type == IDENT) {
+                    block->statements.push_back(parseStmt());
+                    skipNewlines();
+                } else {
+                    NodePtr expr = parseExpr();
+                    auto stmt = std::make_shared<ExprStmtNode>();
+                    stmt->expr = expr;
+                    block->statements.push_back(stmt);
+                    skipNewlines();
+                }
+             }
+             return block;
         } else if (t.value == "(") {
             NodePtr expr = parseExpr();
             expect(SYMBOL, ")");
