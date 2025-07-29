@@ -278,7 +278,7 @@ public:
             } else {
                 return std::make_shared<VarRefNode>(t.value, t.line);
             }
-        else if (t.value == "{") {
+        } else if (t.value == "{") {
             auto block = std::make_shared<BlockNode>();
             block->line = t.line;
             skipNewlines();
