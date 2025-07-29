@@ -46,17 +46,18 @@ public:
     }
 
     std::string expectType() {
+        std::string ptrPrefix = "";
+        while (accept(SYMBOL, "*")) {
+            ptrPrefix += "*";
+        }
+
         Token t = get();
         if (t.type == KEYWORD || t.type == IDENT) {
-            std::string base = t.value;
-            if (accept(SYMBOL, "*")) {
-                return "*" + expectType();
-            }
-            return base;
+            return ptrPrefix + t.value;
         }
+
         throw std::runtime_error("Expected type at line " + std::to_string(t.line));
     }
-
     std::shared_ptr<ProgramNode> parseProgram() {
         auto program = std::make_shared<ProgramNode>();
         skipNewlines();
