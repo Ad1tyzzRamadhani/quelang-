@@ -321,7 +321,7 @@ public:
 
     bool isOperator(const Token& t) {
         static std::unordered_set<std::string> ops = {
-            "+", "-", "*", "/", "%", "==", "!=", "<", ">", "<=", ">="
+            "+", "-", "*", "/", "%", "==", "!=", "<", ">", "<=", ">=", "and", "or"
         };
         return t.type == SYMBOL && ops.count(t.value);
     }
