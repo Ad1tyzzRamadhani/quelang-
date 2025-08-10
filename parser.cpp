@@ -51,6 +51,12 @@ public:
             ptrPrefix += "*";
         }
 
+        if (accept(SYMBOL, "[")) {
+            std::string innerType = expectType();
+            expect(SYMBOL, "]");
+            return "[" + innerType + "]";
+        }
+
         Token t = get();
         if (t.type == KEYWORD || t.type == IDENT) {
             return ptrPrefix + t.value;
