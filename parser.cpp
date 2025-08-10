@@ -255,6 +255,10 @@ public:
                 call->args = args;
                 call->name = "__inline";
                 base = call;
+            } else if (accept(SYMBOL, "[")) {
+                NodePtr indexExpr = parseExpr();
+                expect(SYMBOL, "]");
+                base = std::make_shared<ArrayIndexNode>(base, indexExpr);
             } else {
                 break;
             }
