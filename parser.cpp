@@ -333,6 +333,6 @@ public:
         static std::unordered_set<std::string> ops = {
             "+", "-", "*", "/", "%", "==", "!=", "<", ">", "<=", ">=", "and", "or"
         };
-        return t.type == SYMBOL && ops.count(t.value);
+        return (t.type == SYMBOL || t.type == KEYWORD) && ops.count(t.value);
     }
 };
