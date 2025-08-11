@@ -10,7 +10,7 @@ enum class NodeKind {
     StructDef, Param, Block, Decl, Assign, ExprStmt,
     If, While, Return, Break, Continue, Inj,
     Literal, BinaryOp, UnaryOp, VarRef, Call, StructInit,
-    PointerAssign, MemberAccess, ArrayLiteral
+    PointerAssign, MemberAccess, ArrayLiteral, ArrayIndex
 };
 
 struct Node {
@@ -131,6 +131,15 @@ struct LiteralNode : Node {
 struct ArrayLiteralNode : Node {
     std::vector<NodePtr> elements;
     ArrayLiteralNode(int line) { this->kind = NodeKind::ArrayLiteral; this->line = line; }
+};
+
+struct ArrayIndexNode : Node {
+    NodePtr array;
+    NodePtr index;
+    ArrayIndexNode(NodePtr arr, NodePtr idx) : array(arr), index(idx) {
+        kind = NodeKind::ArrayIndex;
+        line = arr->line;
+    }
 };
 
 struct VarRefNode : Node {
