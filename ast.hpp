@@ -40,14 +40,15 @@ struct BlockNode : Node {
     BlockNode() { kind = NodeKind::Block; }
 };
 
-struct MemContractNode : Node {
-    std::string mode;
-    std::string target;
-    size_t size;
 
-    MemContractNode() : size(0) { 
-        kind = NodeKind::MemContract; 
-        line = 0; 
+struct MemContractNode : Node {
+    std::string mode;   // "read" atau "write"
+    std::string target; // nama variabel / parameter
+    size_t size;        // ukuran dalam byte
+
+    MemContractNode() : size(0) {
+        kind = NodeKind::MemContract;
+        line = 0;
     }
 
     MemContractNode(const std::string& m, const std::string& t, size_t s, int l) 
