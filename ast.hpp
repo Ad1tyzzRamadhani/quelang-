@@ -10,7 +10,7 @@ enum class NodeKind {
     StructDef, Param, Block, Decl, Assign, ExprStmt,
     If, While, Return, Break, Continue, Inj,
     Literal, BinaryOp, UnaryOp, VarRef, Call, StructInit,
-    PointerAssign, MemberAccess, ArrayLiteral, ArrayIndex, MemContract
+    PointerAssign, MemberAccess, ArrayLiteral, ArrayIndex
 };
 
 struct Node {
@@ -40,29 +40,10 @@ struct BlockNode : Node {
     BlockNode() { kind = NodeKind::Block; }
 };
 
-
-struct MemContractNode : Node {
-    std::string mode;   // "read" atau "write"
-    std::string target; // nama variabel / parameter
-    size_t size;        // ukuran dalam byte
-
-    MemContractNode() : size(0) {
-        kind = NodeKind::MemContract;
-        line = 0;
-    }
-
-    MemContractNode(const std::string& m, const std::string& t, size_t s, int l) 
-        : mode(m), target(t), size(s) {
-        kind = NodeKind::MemContract;
-        line = l;
-    }
-};
-
 struct FunctionDefNode : Node {
     std::string name;
     std::vector<ParamNode> params;
     std::string returnType;
-    NodeList<MemContractNode> memContracts;
     NodePtr body;
     FunctionDefNode() { kind = NodeKind::FunctionDef; }
 };
