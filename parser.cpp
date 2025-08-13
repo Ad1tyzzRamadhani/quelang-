@@ -92,8 +92,22 @@ public:
         if (accept(KEYWORD, "def")) {
             if (accept(KEYWORD, "struct")) {
                 std::string name = expectIdent();
-                expect(SYMBOL, "{");
                 auto def = std::make_shared<StructDefNode>(name, t.line);
+                while (true) {
+                    if (accept(IDENT, "align")) {
+                        expect(SYMBOL, "(");
+                        def->align = std::stoi(expectIdent()); // angka align
+                        expect(SYMBOL, ")");
+                    } else if (accept(IDENT, "packed")) {
+                        def->packed = true;
+                    } else if (accept(IDENT, "at")) {
+                        expect(SYMBOL, "(");
+                        std::string addrStr = expectIdent();
+                        def->baseAddress = std::stoull(addrStr, nullptr, 0); // dukung hex
+                        expect(SYMBOL, ")");
+                    } else break;
+                }
+                expect(SYMBOL, "{");
                 while (true) {
                     skipNewlines();
                     if (accept(SYMBOL, "}")) break;
