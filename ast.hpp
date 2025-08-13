@@ -10,7 +10,7 @@ enum class NodeKind {
     StructDef, Param, Block, Decl, Assign, ExprStmt,
     If, While, Return, Break, Continue, Inj,
     Literal, BinaryOp, UnaryOp, VarRef, Call, StructInit,
-    PointerAssign, MemberAccess, ArrayLiteral, ArrayIndex
+    PointerAssign, MemberAccess, ArrayLiteral, ArrayIndex, MemContract
 };
 
 struct Node {
@@ -103,7 +103,7 @@ struct WhileStmtNode : Node {
     WhileStmtNode() { kind = NodeKind::While; }
 };
 
-struct MemContract {
+struct MemContractNode {
     std::string mode;   // "read" atau "write"
     std::string target; // nama variabel / param
     size_t size;        // ukuran dalam byte
