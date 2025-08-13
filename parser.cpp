@@ -135,6 +135,7 @@ public:
                 if (accept(SYMBOL, ":")) {
                     retType = expectType();
                 }
+                auto fn = std::make_shared<FunctionDefNode>();
                 if (accept(IDENT, "mem")) { 
                     expect(SYMBOL, "[");
                     do {
@@ -149,7 +150,6 @@ public:
                     } while (accept(SYMBOL, ","));
                     expect(SYMBOL, "]");
                 }
-                auto fn = std::make_shared<FunctionDefNode>();
                 fn->name = name;
                 fn->params = params;
                 fn->returnType = retType;
