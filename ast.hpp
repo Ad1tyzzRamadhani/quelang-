@@ -42,9 +42,9 @@ struct BlockNode : Node {
 
 struct FunctionDefNode : Node {
     std::string name;
-    std::vector<ParamNode> params;
+    NodeList<ParamNode> params;
     std::string returnType;
-    std::vector<MemContractNode> memContractsNode;
+    NodeList<MemContractNode> memContracts;
     NodePtr body;
     FunctionDefNode() { kind = NodeKind::FunctionDef; }
 };
@@ -103,10 +103,16 @@ struct WhileStmtNode : Node {
     WhileStmtNode() { kind = NodeKind::While; }
 };
 
-struct MemContractNode {
+struct MemContractNode : Node {
     std::string mode;   // "read" atau "write"
-    std::string target; // nama variabel / param
+    std::string target; // nama variabel / parameter
     size_t size;        // ukuran dalam byte
+
+    MemContractNode(const std::string& m, const std::string& t, size_t s, int l) 
+        : mode(m), target(t), size(s) {
+        kind = NodeKind::MemContract;
+        line = l;
+    }
 };
 
 struct ReturnStmtNode : Node {
