@@ -139,7 +139,7 @@ public:
                 if (accept(IDENT, "mem")) { 
                     expect(SYMBOL, "[");
                     do {
-                        MemContract mc;
+                        MemContractNode mc;
                         mc.mode = expectIdent(); // read/write
                         expect(SYMBOL, "(");
                         mc.target = expectIdent();
