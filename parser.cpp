@@ -135,6 +135,20 @@ public:
                 if (accept(SYMBOL, ":")) {
                     retType = expectType();
                 }
+                if (accept(IDENT, "mem")) { 
+                    expect(SYMBOL, "[");
+                    do {
+                        MemContract mc;
+                        mc.mode = expectIdent(); // read/write
+                        expect(SYMBOL, "(");
+                        mc.target = expectIdent();
+                        expect(SYMBOL, ",");
+                        mc.size = std::stoull(expectIdent(), nullptr, 0);
+                        expect(SYMBOL, ")");
+                        fn->memContracts.push_back(mc);
+                    } while (accept(SYMBOL, ","));
+                    expect(SYMBOL, "]");
+                }
                 auto fn = std::make_shared<FunctionDefNode>();
                 fn->name = name;
                 fn->params = params;
