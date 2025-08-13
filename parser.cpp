@@ -136,19 +136,6 @@ public:
                     retType = expectType();
                 }
                 auto fn = std::make_shared<FunctionDefNode>();
-                if (accept(IDENT, "mem")) { 
-                    expect(SYMBOL, "[");
-                    do {
-                        mc.mode = expectIdent(); // read/write
-                        expect(SYMBOL, "(");
-                        mc.target = expectIdent();
-                        expect(SYMBOL, ",");
-                        mc.size = std::stoull(expectIdent(), nullptr, 0);
-                        expect(SYMBOL, ")");
-                        fn->memContracts.push_back(mc);
-                    } while (accept(SYMBOL, ","));
-                    expect(SYMBOL, "]");
-                }
                 fn->name = name;
                 fn->params = params;
                 fn->returnType = retType;
