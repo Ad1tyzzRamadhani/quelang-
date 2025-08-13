@@ -139,8 +139,7 @@ public:
                 if (accept(IDENT, "mem")) { 
                     expect(SYMBOL, "[");
                     do {
-                        auto mc = std::make_shared<MemContractNode>(mode, target, size, line);
-                        funcNode->memContracts.push_back(mc);
+                        MemContractNode mc;
                         mc.mode = expectIdent(); // read/write
                         expect(SYMBOL, "(");
                         mc.target = expectIdent();
