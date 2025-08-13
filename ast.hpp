@@ -44,6 +44,7 @@ struct FunctionDefNode : Node {
     std::string name;
     std::vector<ParamNode> params;
     std::string returnType;
+    std::vector<MemContract> memContracts;
     NodePtr body;
     FunctionDefNode() { kind = NodeKind::FunctionDef; }
 };
@@ -60,6 +61,9 @@ struct TypeInitNode : Node {
 struct StructDefNode : Node {
     std::string name;
     std::vector<std::pair<std::string, std::string>> fields;
+    int align = 0; 
+    bool packed = false;
+    uint64_t baseAddress = 0;
     StructDefNode(const std::string& n, int l) : name(n) {
         kind = NodeKind::StructDef;
         line = l;
@@ -97,6 +101,12 @@ struct WhileStmtNode : Node {
     NodePtr cond;
     NodePtr block;
     WhileStmtNode() { kind = NodeKind::While; }
+};
+
+struct MemContract {
+    std::string mode;   // "read" atau "write"
+    std::string target; // nama variabel / param
+    size_t size;        // ukuran dalam byte
 };
 
 struct ReturnStmtNode : Node {
