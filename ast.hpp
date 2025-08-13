@@ -44,7 +44,7 @@ struct FunctionDefNode : Node {
     std::string name;
     std::vector<ParamNode> params;
     std::string returnType;
-    std::vector<MemContract> memContracts;
+    std::vector<MemContractNode> memContractsNode;
     NodePtr body;
     FunctionDefNode() { kind = NodeKind::FunctionDef; }
 };
