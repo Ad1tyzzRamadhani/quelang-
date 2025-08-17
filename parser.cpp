@@ -160,7 +160,7 @@ public:
 
     NodePtr parseStmt() {
         Token t = peek();
-        if (accept(KEYWORD, "let")) {
+        if (accept(KEYWORD, "var")) {
             int line = peek().line;
             std::string name = expectIdent();
             std::string type = "";
