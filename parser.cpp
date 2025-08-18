@@ -112,7 +112,6 @@ public:
                     skipNewlines();
                     if (accept(SYMBOL, "}")) break;
                     std::string field = expectIdent();
-                    expect(SYMBOL, ":");
                     std::string type = expectType();
                     def->fields.emplace_back(field, type);
                     skipNewlines();
@@ -125,16 +124,13 @@ public:
                 if (!accept(SYMBOL, ")")) {
                     do {
                         std::string pname = expectIdent();
-                        expect(SYMBOL, ":");
                         std::string ptype = expectType();
                         params.emplace_back(pname, ptype, t.line);
                     } while (accept(SYMBOL, ","));
                     expect(SYMBOL, ")");
                 }
                 std::string retType = "";
-                if (accept(SYMBOL, ":")) {
-                    retType = expectType();
-                }
+                std::string typ = expectType();
                 auto fn = std::make_shared<FunctionDefNode>();
                 fn->name = name;
                 fn->params = params;
@@ -164,9 +160,7 @@ public:
             int line = peek().line;
             std::string name = expectIdent();
             std::string type = "";
-            if (accept(SYMBOL, ":")) {
-                type = expectType();
-            }
+            std::string typ = expectType();
             expect(SYMBOL, "=");
             NodePtr expr = parseExpr();
             auto decl = std::make_shared<DeclStmtNode>(DeclStmtNode{name, type, expr});
