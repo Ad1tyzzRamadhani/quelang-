@@ -206,15 +206,16 @@ public:
         } else if (accept(KEYWORD, "continue")) {
             return std::make_shared<ContinueStmtNode>();
         } else if (accept(KEYWORD, "inj")) {
-            std::string target = expectIdent();
-            expect(SYMBOL, "{");
-            auto inj = std::make_shared<InjStmtNode>(target);
-            while (true) {
-                skipNewlines();
-                if (accept(SYMBOL, "}")) break;
-                inj->values.push_back(parseExpr());
-                skipNewlines();
+            expect(SYMBOL, "(");
+            Token t = get();
+            if (t.type != STRING) {
+                throw std::runtime_error("Expected string in inj() at line " + std::to_string(t.line));
             }
+            auto inj = std::make_shared<InjStmtNode>(t.value);
+            while (accept(SYMBOL, "+")) {
+                inj->values.push_back(parseExpr());
+            }
+            expect(SYMBOL, ")");
             return inj;
         } else {
             NodePtr lhs = parseAssignableExpr();
