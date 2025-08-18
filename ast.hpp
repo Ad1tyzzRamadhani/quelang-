@@ -110,6 +110,7 @@ struct ReturnStmtNode : Node {
 struct InjStmtNode : Node {
     std::string target;
     std::vector<NodePtr> values;
+
     InjStmtNode(const std::string& tgt) : target(tgt) {
         kind = NodeKind::Inj;
     }
