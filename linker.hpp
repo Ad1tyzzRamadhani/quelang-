@@ -36,7 +36,7 @@ private:
             line.erase(0, line.find_first_not_of(" \t"));
             line.erase(line.find_last_not_of(" \t") + 1);
 
-            if (line.rfind("load", 0) == 0) {
+            if (line.rfind("@load", 0) == 0) {
                 size_t firstQuote = line.find('"');
                 size_t lastQuote = line.rfind('"');
                 if (firstQuote != std::string::npos && lastQuote != std::string::npos && firstQuote < lastQuote) {
