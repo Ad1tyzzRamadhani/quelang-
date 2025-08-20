@@ -133,7 +133,7 @@ public:
                 auto fn = std::make_shared<FunctionDefNode>();
                 fn->name = name;
                 fn->params = params;
-                fn->returnType = Typ;
+                fn->returnType = typ;
                 fn->body = parseBlock();
                 return fn;
             }
@@ -158,11 +158,10 @@ public:
         if (accept(KEYWORD, "var")) {
             int line = peek().line;
             std::string name = expectIdent();
-            std::string type = "";
             std::string typ = expectType();
             expect(SYMBOL, "=");
             NodePtr expr = parseExpr();
-            auto decl = std::make_shared<DeclStmtNode>(DeclStmtNode{name, type, expr});
+            auto decl = std::make_shared<DeclStmtNode>(DeclStmtNode{name, typ, expr});
             decl->line = line;
             return decl;
         } else if (accept(KEYWORD, "if")) {
