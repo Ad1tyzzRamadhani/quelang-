@@ -129,12 +129,11 @@ public:
                     } while (accept(SYMBOL, ","));
                     expect(SYMBOL, ")");
                 }
-                std::string retType = "";
                 std::string typ = expectType();
                 auto fn = std::make_shared<FunctionDefNode>();
                 fn->name = name;
                 fn->params = params;
-                fn->returnType = retType;
+                fn->returnType = Typ;
                 fn->body = parseBlock();
                 return fn;
             }
