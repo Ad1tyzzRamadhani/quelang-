@@ -278,7 +278,7 @@ public:
         if (t.type == NUMBER || t.type == STRING || t.value == "true" || t.value == "false" || t.value == "nil") {
             return std::make_shared<LiteralNode>(t.value, t.line);
         } else if (t.type == IDENT) {
-            if (peek().value == "(" && tokens[index + 1].value == ")") {
+            if (peek().value == "{" && tokens[index + 1].value == "}") {
                 get(); get();
                 return std::make_shared<StructInitNode>(t.value, t.line);
             } else if (accept(SYMBOL, "(")) {
