@@ -89,57 +89,54 @@ public:
             }
         }
 
-        if (accept(KEYWORD, "def")) {
-            if (accept(KEYWORD, "struct")) {
-                std::string name = expectIdent();
-                auto def = std::make_shared<StructDefNode>(name, t.line);
-                while (true) {
-                    if (accept(IDENT, "align")) {
-                        expect(SYMBOL, "(");
-                        def->align = std::stoi(expectIdent()); // angka align
-                        expect(SYMBOL, ")");
-                    } else if (accept(IDENT, "packed")) {
-                        def->packed = true;
-                    } else if (accept(IDENT, "at")) {
-                        expect(SYMBOL, "(");
-                        std::string addrStr = expectIdent();
-                        def->baseAddress = std::stoull(addrStr, nullptr, 0); // dukung hex
-                        expect(SYMBOL, ")");
-                    } else break;
-                }
-                expect(SYMBOL, "{");
-                while (true) {
-                    skipNewlines();
-                    if (accept(SYMBOL, "}")) break;
-                    std::string field = expectIdent();
-                    std::string type = expectType();
-                    def->fields.emplace_back(field, type);
-                    skipNewlines();
-                }
-                return def;
-            } else {
-                std::string name = expectIdent();
-                expect(SYMBOL, "(");
-                std::vector<ParamNode> params;
-                if (!accept(SYMBOL, ")")) {
-                    do {
-                        std::string pname = expectIdent();
-                        std::string ptype = expectType();
-                        params.emplace_back(pname, ptype, t.line);
-                    } while (accept(SYMBOL, ","));
+        if (accept(KEYWORD, "struct")) {
+             std::string name = expectIdent();
+             auto def = std::make_shared<StructDefNode>(name, t.line);
+            while (true) {
+                if (accept(IDENT, "align")) {
+                     expect(SYMBOL, "(");
+                     def->align = std::stoi(expectIdent()); // angka align
+                     expect(SYMBOL, ")");
+                 } else if (accept(IDENT, "packed")) {
+                     def->packed = true;
+                } else if (accept(IDENT, "at")) {
+                    expect(SYMBOL, "(");
+                     std::string addrStr = expectIdent();
+                     def->baseAddress = std::stoull(addrStr, nullptr, 0); // dukung hex
                     expect(SYMBOL, ")");
-                }
-                std::string typ = expectType();
-                auto fn = std::make_shared<FunctionDefNode>();
-                fn->name = name;
-                fn->params = params;
-                fn->returnType = typ;
-                fn->body = parseBlock();
-                return fn;
+                } else break;
+             }
+             expect(SYMBOL, "{");
+            while (true) {
+                skipNewlines();
+                if (accept(SYMBOL, "}")) break;
+                std::string field = expectIdent();
+                std::string type = expectType();
+                def->fields.emplace_back(field, type);
+                skipNewlines();
             }
+            return def;
+        if (accept(KEYWORD, "func")) {
+            std::string name = expectIdent();
+             expect(SYMBOL, "(");
+             std::vector<ParamNode> params;
+            if (!accept(SYMBOL, ")")) {
+                do {
+                     std::string pname = expectIdent();
+                     std::string ptype = expectType();
+                     params.emplace_back(pname, ptype, t.line);
+                } while (accept(SYMBOL, ","));
+                expect(SYMBOL, ")");
+             }
+            std::string typ = expectType();
+            auto fn = std::make_shared<FunctionDefNode>();
+            fn->name = name;
+             fn->params = params;
+             fn->returnType = typ;
+             fn->body = parseBlock();
+            return fn;
         }
-
-        throw std::runtime_error("Invalid top-level definition at line " + std::to_string(t.line));
+    throw std::runtime_error("Invalid top-level definition at line " + std::to_string(t.line));
     }
 
     std::shared_ptr<BlockNode> parseBlock() {
