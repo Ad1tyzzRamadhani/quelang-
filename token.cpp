@@ -17,7 +17,7 @@ struct Token {
 };
 
 const std::unordered_set<std::string> keywords = {
-    "init", "def", "type", "struct", "var", "if", "else", "elseif", "while",
+    "init", "func", "type", "struct", "var", "if", "else", "elseif", "while",
     "return", "break", "continue", "true", "false", "nil", "inj", "u16", "bool", "str", "and", "or", "int", "float", "i8", "char", "u8", "i16", "byte", "i32", "u32", "u64", "i64",
     "any", "void", "opaque", "error"
 };
