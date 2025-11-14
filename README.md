@@ -26,7 +26,7 @@
 | ✅ Kelebihan                          | ⚠️ Kekurangan                        |
 |--------------------------------------|--------------------------------------|
 | Minimalis dan eksplisit              | Belum ada memory safety / GC         |
-| Modular: tokenizer → parser → codegen| Belum mendukung x86/x64              |
+| Modular                              | Belum mendukung x86/x64              |
 | Mudah dipelajari & disusun           | Belum ada tooling modern (pkg mgr)   |
 
 ---
@@ -40,14 +40,12 @@ bash build.sh
 ```
 
 ```sh
-./quelang input.q output.s         # Compile ke AArch64 Assembly
-aarch64-linux-gnu-as -o out.o output.s
-aarch64-linux-gnu-ld -o binary out.o
+Dalam Pengembangan*
 ```
 
 Aktifkan debug:
 ```sh
-./quelang --debug input.q output.s
+Dalam Pengembangan*
 ```
 
 ---
@@ -56,19 +54,25 @@ Aktifkan debug:
 
 ### 🧩 Fungsi (`def`)
 ```quelang
-def tambah(a: u16, b: u16): u16 {
+int tambah(int a, int b) {
     return a + b
 }
 ```
 
 ### 🧱 Struct (`def struct`)
 ```quelang
-def struct Pair {x: u16 y: u16}
+struct Vector3 {
+    int x,
+    int y,
+    int z,
+    static struct Vector3 new() {
+        return struct Vector3{0,0,0}
+    }
 ```
 
 ### 🏷️ Alias Tipe (`init type`)
 ```quelang
-init type Age = u16
+@def Age = u16
 ```
 
 ### 🎯 Pointer (`*`, `&`)
@@ -79,25 +83,25 @@ init type Age = u16
 
 ### 🔥 Injeksi ASM (`inj`)
 ```quelang
-inj raw {mov x0, #42\nret"}
+inj("mov x0, #42\nret")
 ```
 
 ### 🔁 Kontrol Alur
 ```quelang
 if x == 1 {
-    inj raw { "mov x0, #1" }
+    inj("mov x0, #1")
 } else {
-    inj raw { "mov x0, #0" }
+    inj("mov x0, #0")
 }
 
 while x < 5 {
-    inj raw { "add x0, x0, #1" }
+    inj("add x0, x0, #1")
 }
 ```
 
 ### 📦 Variabel & Return
 ```quelang
-let age: u16 = 10
+int age = 10
 return age + 5
 ```
 
@@ -121,17 +125,36 @@ return age + 5
 ## 🧪 Contoh Program
 
 ```quelang
-def struct Pair {a: u16 b: u16}
-
-def set(x: u16, y: u16) {
-    *x = y
+struct Vector3 {
+    int x,
+    int y,
+    int z,
+    static struct Vector3 new() {
+        return struct Vector3{0,0,0}
+    }
 }
 
-def main() {
-    let a: u16 = 10
-    let b: u16 = 20
-    return a + b
+struct Player {
+    string name,
+    int id,
+    struct Vector3 position,
+    static struct Player new(struct Player self) {
+        pos = self.position.new()
+        return struct Player{"",0,pos}
+    }
 }
+
+struct Player NewPlayer(int id, string name) {
+    struct Player player = struct Player.new(struct Player{name,id,struct Vector3.new()})
+}
+
+int main() {
+    struct Player p1 = NewPlayer(1,"player1)
+    struct Player p2 = NewPlayer(2,"player2")
+    return 0
+}
+        
+        
 ```
 
 ---
@@ -140,7 +163,7 @@ def main() {
 
 QueLang adalah proyek open-source.  
 Silakan kontribusi melalui GitHub.
-Versi saat ini masih belum stabil , Untuk kedepannya akan saya perbaiki lagi :)
+Versi saat ini masih eksperimental, Masih saya Kembangkan :)
 
 Versi: `v0.4 alpha`  
 © 2025 QueLang Contributors — Dibuat dengan ❤️ untuk pembelajar sistem low-level.
