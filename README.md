@@ -52,14 +52,14 @@ Dalam Pengembangan*
 
 ## 🔍 Contoh Fitur Bahasa
 
-### 🧩 Fungsi (`def`)
+### 🧩 Fungsi (`function`)
 ```quelang
 int tambah(int a, int b) {
     return a + b
 }
 ```
 
-### 🧱 Struct (`def struct`)
+### 🧱 Struct (`struct`)
 ```quelang
 struct Vector3 {
     int x,
@@ -70,9 +70,10 @@ struct Vector3 {
     }
 ```
 
-### 🏷️ Alias Tipe (`init type`)
+### 🏷️ Alias Define (`define`)
 ```quelang
 @def Age = u16
+@def Hello = print("Hello World!")
 ```
 
 ### 🎯 Pointer (`*`, `&`)
@@ -81,7 +82,7 @@ struct Vector3 {
 &x             # ambil alamat x
 ```
 
-### 🔥 Injeksi ASM (`inj`)
+### 🔥 Injeksi (`inj`)
 ```quelang
 inj("mov x0, #42\nret")
 ```
