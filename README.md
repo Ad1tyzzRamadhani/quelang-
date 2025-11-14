@@ -4,7 +4,7 @@
   <p><em>Bahasa sistem baru yang eksplisit, minimalis, dan mendekati perangkat keras.</em></p>
   <p>
     <strong>Sintaks ringan</strong> · 
-    <strong>Kompilasi ke AArch64</strong> · 
+    <strong>Kompilasi ke CRU ( Cuick Representation Utils )</strong> · 
     <strong>Pointer & Struct eksplisit</strong>
   </p>
 </div>
@@ -116,7 +116,7 @@ return age + 5
 | `token.cpp`    | Lexer / tokenizer                          |
 | `parser.cpp`   | Parser + pembentukan AST                   |
 | `checker.cpp`  | Semantic checker minimal                   |
-| `codegen.cpp`  | Codegen ke AArch64                         |
+| `codegen.cpp`  | Codegen ke CRU01                           |
 | `ast.hpp`      | Struktur node AST (Abstract Syntax Tree)   |
 | `grammar.txt`  | Grammar formal dalam BNF                   |
 
