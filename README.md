@@ -1,7 +1,7 @@
 <div align="center">
   <img width="1440" height="1080" alt="Image" src="https://github.com/user-attachments/assets/d59c1b0d-55ff-4926-8dce-ed4985188ae5" />
-  <h1>🌱 QueLang — A Minimalist Systems Language</h1>
-  <p><em>Bahasa sistem baru yang eksplisit, minimalis, dan mendekati perangkat keras.</em></p>
+  <h1>🌱 QueLang — A Hybird - Structural Language</h1>
+  <p><em>Bahasa sistem baru yang eksplisit, struktural, dan mendekati perangkat keras.</em></p>
   <p>
     <strong>Sintaks ringan</strong> · 
     <strong>Kompilasi ke CRU ( Cuick Representation Utils )</strong> · 
@@ -11,7 +11,7 @@
 
 ---
 
-> ⚠️ **PERINGATAN**: QueLang masih dalam versi awal (`v0.4-alpha`) dan belum stabil.  
+> ⚠️ **PERINGATAN**: QueLang masih dalam versi **EXPERIMENTAL** awal (`v0.8-alpha`) dan belum stabil.  
 > Harap tidak digunakan untuk produksi besar. Masukan dan eksperimen sangat diapresiasi!
 >
 
@@ -25,7 +25,7 @@
 
 | ✅ Kelebihan                          | ⚠️ Kekurangan                        |
 |--------------------------------------|--------------------------------------|
-| Minimalis dan eksplisit              | Belum ada memory safety / GC         |
+| Struktural dan eksplisit             | Belum ada memory safety / GC         |
 | Modular                              | Belum mendukung x86/x64              |
 | Mudah dipelajari & disusun           | Belum ada tooling modern (pkg mgr)   |
 
@@ -57,6 +57,14 @@ Dalam Pengembangan*
 int tambah(int a, int b) {
     return a + b
 }
+
+static const int kurang(int a, int b) {
+    return a - b
+}
+
+volatile struct Vector2 moveUp(self) {
+    return self.x + 1
+}
 ```
 
 ### 🧱 Struct (`struct`)
@@ -70,10 +78,19 @@ struct Vector3 {
     }
 ```
 
-### 🏷️ Alias Define (`define`)
+### 🏷️ Macros System (`define & linking`)
 ```quelang
-@def Age = u16
+@def Number = int
 @def Hello = print("Hello World!")
+@load "io.q"
+
+# implementasi
+
+int main() {
+    Number num = 0
+    Hello # print("Hello World!")
+    return num
+}
 ```
 
 ### 🎯 Pointer (`*`, `&`)
@@ -95,15 +112,31 @@ if x == 1 {
     inj("mov x0, #0")
 }
 
+int i = 0
+string[10] msg = "massage number : "
+for i in msg {
+    print(msg + i)
+}
+
 while x < 5 {
     inj("add x0, x0, #1")
+    x = x + 1
 }
 ```
 
 ### 📦 Variabel & Return
 ```quelang
 int age = 10
+const int MAX_NUM = 99
+volatile int ADDR = struct Address.get()
+struct Vector2 position = struct Vector2.get_position()
+
+#return
+
 return age + 5
+defer {
+    print("Program execute succesfully")
+}
 ```
 
 ---
@@ -140,17 +173,17 @@ struct Player {
     int id,
     struct Vector3 position,
     static struct Player new(struct Player self) {
-        pos = self.position.new()
+        struct Vector3 pos = self.position.new()
         return struct Player{"",0,pos}
     }
 }
 
 struct Player NewPlayer(int id, string name) {
-    struct Player player = struct Player.new(struct Player{name,id,struct Vector3.new()})
+    return struct Player.new(struct Player{name,id,struct Vector3.new()})
 }
 
 int main() {
-    struct Player p1 = NewPlayer(1,"player1)
+    struct Player p1 = NewPlayer(1,"player1")
     struct Player p2 = NewPlayer(2,"player2")
     return 0
 }
