@@ -11,7 +11,7 @@
 
 ---
 
-> ⚠️ **PERINGATAN**: QueLang masih dalam versi **EXPERIMENTAL** awal (`v0.8-alpha`) dan belum stabil.  
+> ⚠️ **PERINGATAN**: QueLang masih dalam versi **EXPERIMENTAL** awal (`v0.1.0-experimental`) dan belum stabil.  
 > Harap tidak digunakan untuk produksi besar. Masukan dan eksperimen sangat diapresiasi!
 >
 
@@ -199,7 +199,7 @@ QueLang adalah proyek open-source.
 Silakan kontribusi melalui GitHub.
 Versi saat ini masih eksperimental, Masih saya Kembangkan :)
 
-Versi: `v0.4 alpha`  
+Versi: `v0.1.0-experimental`
 © 2025 QueLang Contributors — Dibuat dengan ❤️ untuk pembelajar sistem low-level.
 
 ---
